@@ -60,7 +60,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 super.onLocationResult(p0)
 
                 if(mMap != null){
-                    mMap.isMyLocationEnabled = true
+                    //mMap.isMyLocationEnabled = true
                     mMap.uiSettings.isMyLocationButtonEnabled = true
                     for (ubicacion in p0?.locations!!){
                         Toast.makeText(applicationContext,ubicacion.latitude.toString() + ", " + ubicacion.longitude.toString(),
@@ -244,19 +244,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
     private fun obtenerCoordenadas(json: String) : PolylineOptions{
         val gson = Gson()
+        /*
         val objeto = gson.fromJson(json, com.example.pruebaslocalizacion.Response::class.java)
 
         val puntos = objeto.routes?.get(0)!!.legs?.get(0)!!.steps!!
-
+*/
         var coordenadas = PolylineOptions()
-
+/*
         for(punto in puntos){
             coordenadas.add(punto.start_location?.toLatLng())
             coordenadas.add(punto.end_location?.toLatLng())
         }
 
         coordenadas.color(Color.CYAN).width(15f)
-
+*/
         return coordenadas
     }
 
