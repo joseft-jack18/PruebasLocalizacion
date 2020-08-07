@@ -2,7 +2,7 @@ package com.example.pruebaslocalizacion
 
 import com.google.android.gms.maps.model.LatLng
 
-class Responsex {
+class Response {
     var routes: ArrayList<Routes>? = null
 }
 
