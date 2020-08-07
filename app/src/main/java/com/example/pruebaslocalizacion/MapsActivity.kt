@@ -1,6 +1,7 @@
 package com.example.pruebaslocalizacion
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +11,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.android.volley.Request
 import com.android.volley.Response
+import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -43,6 +45,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     private var miposicion: LatLng? = null
 
     private lateinit var mMap: GoogleMap
+
+
+    var list : ArrayList<ClienteModel> = ArrayList()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -280,5 +286,35 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         detenerActualizacionUbicacion()
     }
 
+    fun ExtraerClientes (con: Context){
+        //codigo para guardar la latitud y longitud en la base de datos
+        var url = Conexion.conexion + "ListarClientes.php"
+        var rq = Volley.newRequestQueue(this)
+
+        var sr = JsonArrayRequest(Request.Method.GET, url, null,
+            Response.Listener { response ->
+
+                //Toast.makeText(this,"Clientes extraidos...",Toast.LENGTH_LONG).show()
+                for(x in 0..response.length()-1){
+
+                    list.add(
+                        ClienteModel(
+                            response.getJSONObject(x).getString("CLIdni"),
+                            response.getJSONObject(x).getString("CLInombre"),
+                            response.getJSONObject(x).getString("CLIapellido"),
+                            response.getJSONObject(x).getString("CLIcelular"),
+                            response.getJSONObject(x).getDouble("CLIlatitud"),
+                            response.getJSONObject(x).getDouble("CLIlongitud"),
+                            response.getJSONObject(x).getString("CLIfoto")
+                        )
+                    )
+                }
+                //Toast.makeText(con,list.toString(),Toast.LENGTH_LONG).show()
+
+            },
+            Response.ErrorListener {  })
+        rq.add(sr)
+        //Log.d("url: ", list.toString())
+    }
 
 }
